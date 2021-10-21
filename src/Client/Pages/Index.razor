@@ -1,9 +1,31 @@
 ﻿@page "/"
-
+@using Domain;
 <h1>Snake Eyes </h1>
 
 <div>
-    <Dice Pips="4"/>
-    <Dice Pips="6" />
-
+    <Dice Pips="@_game.Eye1"/>
+    <Dice Pips="@_game.Eye2"/>
 </div>
+
+<p>
+    Score: @_game.Total
+</p>
+
+<button @onclick="_game.Play">Play</button>
+<h3>Highscores</h3>
+<ul>
+    @foreach (int score in _game.HighScores.OrderByDescending(x => x))
+            {
+                <li>@score</li>
+            }
+</ul>
+@if (_game.HasSnakeEyes) 
+{ 
+    <div class="alert alert-danger">Oeps you did it again!</div>
+    <button @onclick="_game.Restart">Restart</button>
+}
+
+
+@code{
+    private Game _game = new();
+}
